@@ -37,6 +37,7 @@ router.post('/open', auth, role('admin','superadmin'), async (req, res) => {
     shift.openedAt = new Date();
     shift.openedBy = req.user.displayName || req.user.username;
     shift.cookArrived = false;
+    shift.closeRequestedBy = null;
     await shift.save();
     const io = req.app.get('io');
     io.emit('shiftOpened', shift);
