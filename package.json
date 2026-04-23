@@ -1,0 +1,8 @@
+{
+  "name": "neon-root",
+  "version": "3.0.0",
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build",
+    "start": "cd backend && node server.js"
+  }
+}
