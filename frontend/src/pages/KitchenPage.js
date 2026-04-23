@@ -23,8 +23,20 @@ export default function KitchenPage() {
 
   useEffect(() => { requestPermission(); loadAll(); }, []);
 
+  const printOrder = async (order) => {
+    try {
+      await fetch('http://localhost:3001/print', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(order)
+      });
+    } catch (e) {
+      console.warn('Print failed:', e.message);
+    }
+  };
+
   useSocket({
-    newOrder: o => { setOrders(p => [o, ...p]); notify(`Новый заказ — стол ${o.tableNumber} (${(o.club||'').toUpperCase()})`); },
+    newOrder: o => { setOrders(p => [o, ...p]); notify(`Новый заказ — стол ${o.tableNumber} (${(o.club||'').toUpperCase()})`); printOrder(o); },
     orderUpdated: o => setOrders(p => p.map(x => x._id===o._id ? o : x)),
     menuUpdated: () => API.get('/menu').then(r => setMenu(r.data)).catch(() => {})
   });
